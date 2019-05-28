@@ -1,0 +1,46 @@
+{
+  "name": "movie-history",
+  "version": "1.0.0",
+  "description": "As a User, when I click the login with google button, I should be prompted with a google popup to pick which account to log in with.\r # AC\r **WHEN** The user clicks the google login button they should see a popup window with an option to log into the site with their google account\r **THEN** They should be able to enter their gmail information to log into the site\r # Development\r * Make Project @ firebase\r * @ firebase enable gmail login (authentication -> Sign in method -> gmail -> enable)\r * go to project settings -> click the html icon (`</>`)\r * back in the local project's console enter `npm install --save firebase`\r * make a file named `apiKeys.json`, @ `src/javascripts/helpers`\r * copy the part of the firebase info given on firebase with \"apikey, authDomain, etc\", and convert this into json data.\r     * **IMPORTANT** YOU MUST ADD THIS FILE TO `.gitignore`, and import when needed\r ``` JSON\r {\r   \"firebaseKeys\": {\r     \"apiKey\": \"sorryNotARealApiKey\",\r     \"authDomain\": \"example.firebaseapp.com\",\r     \"databaseURL\": \"https://example.firebaseio.com\",\r     \"projectId\": \"example-123456789\",\r     \"storageBucket\": \"example-666.google.com\",\r     \"messagingSenderId\": \"123456789\",\r     \"appId\": \"123456789\"\r   }\r }\r ```\r * (Add a file named `apiKeys.example.json` with empty values for reference.)\r * inside `auth.js`, and `main.js`, on top of the file `import firebase from 'firebase/app';`, and `import 'firebase/auth';`\r * in `auth.js` make a new function named `signMeIn()` which will call a popup window to log into google when called\r ```\r const signMeIn = () => {\r   const provider = new firebase.auth.GoogleAuthProvider();\r   firebase.auth().signInWithPopup(provider);\r };\r ```\r * add an event listener that calls `signMeIn()`  when your login button is clicked\r * export if needed\r * Inside `main.js`,  `import apiKeys from './helpers/apiKeys.json';`\r * inside your init function call `firebase.initializeApp(apiKeys.firebaseKeys);`\r * You will now get a popup box when the login button is clicked, but when you log in the browser throws an error. If you follow that link, and use your email address as the customer support email, and accept you should be able to log in successfully.",
+  "main": "src/javascripts/main.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production --module-bind js=babel-loader"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GitMullins/movie-history.git"
+  },
+  "keywords": [],
+  "author": "David Mullins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GitMullins/movie-history/issues"
+  },
+  "homepage": "https://github.com/GitMullins/movie-history#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^2.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.17.3",
+    "file-loader": "^3.0.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.7.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0"
+  }
+}
