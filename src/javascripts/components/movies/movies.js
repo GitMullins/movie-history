@@ -30,6 +30,7 @@ const newMovieBtn = () => {
 };
 
 const addToWatchlistEvent = (e) => {
+  movieData.deleteMovie(e.target.id);
   const movie = {
     imageUrl: $(e.target).closest('div').find('.img')[0].id,
     title: $(e.target).closest('div').find('.title')[0].id,
@@ -41,9 +42,9 @@ const addToWatchlistEvent = (e) => {
       .then(() => getMovies(firebase.auth().currentUser.uid)) // eslint-disable-line no-use-before-define
       .catch(err => console.error('no update', err));
   }
-  movieData.deleteMovie(movie)
-    .then(() => getMovies(firebase.auth().currentUser.uid)) // eslint-disable-line no-use-before-define
-    .catch(err => console.error('no deletion', err));
+  // movieData.deleteMovie(movie)
+  //   .then(() => getMovies(firebase.auth().currentUser.uid)) // eslint-disable-line no-use-before-define
+  //   .catch(err => console.error('no deletion', err));
 };
 
 const addEvents = () => {
@@ -58,22 +59,25 @@ const domStringBuilder = (movies, watchlist) => {
   let domString = '';
   domString += '<div class="row text-center">';
   movies.forEach((movie) => {
-    domString += `<div id="${movie.id}"class="card col-3" style="width: 20rem;">`;
-    domString += `<h3 id="${movie.title}" class="title">${movie.title}</h3>`;
-    domString += `<img class="img" id="${movie.imageUrl}" src="${movie.imageUrl}" alt="birthday location"/>`;
-    domString += `<button id="${movie.id}" class="btn btn-danger watchlist">Add to Watchlist</button>`;
-    domString += '</div>';
-  });
-  watchlist.forEach((movie) => {
-    domString += `<div id="${movie.id}"class="card col-3" style="width: 20rem;">`;
-    domString += '<h2>WATCHLIST</h2>';
+    domString += `<div id="${movie.id}" class="card col-3" style="width: 50rem;">`;
     domString += `<h3 id="${movie.title}" class="title">${movie.title}</h3>`;
     domString += `<img class="img" id="${movie.imageUrl}" src="${movie.imageUrl}" alt="birthday location"/>`;
     domString += `<button id="${movie.id}" class="btn btn-danger watchlist">Add to Watchlist</button>`;
     domString += '</div>';
   });
   domString += '</div>';
-  util.printToDom('event', domString);
+  let watchlistBuilder = '';
+  watchlistBuilder += '<div class="row text-center">';
+  watchlist.forEach((movie) => {
+    watchlistBuilder += `<div id="${movie.id}" class="card col-3" style="width: 50rem;">`;
+    watchlistBuilder += '<h2>WATCHLIST</h2>';
+    watchlistBuilder += `<h3 id="${movie.title}" class="title">${movie.title}</h3>`;
+    watchlistBuilder += `<img class="img" id="${movie.imageUrl}" src="${movie.imageUrl}" alt="birthday location"/>`;
+    watchlistBuilder += '</div>';
+  });
+  watchlistBuilder += '</div>';
+  util.printToDom('moviesDiv', domString);
+  util.printToDom('watchlistDiv', watchlistBuilder);
   addEvents();
 };
 
@@ -81,8 +85,6 @@ const getMovies = (uid) => {
   movieData.getAllMoviesByUid(uid)
     .then((movies) => {
       watchlistData.getWatchlistById(uid).then((watchlist) => {
-        // movieData.getWatchlistById(watchlist);
-        console.error(watchlist);
         domStringBuilder(movies, watchlist);
       });
     })
