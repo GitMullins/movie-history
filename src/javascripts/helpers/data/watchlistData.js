@@ -22,4 +22,8 @@ const addToWatchlist = movie => axios.post(`${firebaseUrl}/watchlist.json`, movi
 
 const deleteMovie = movieId => axios.delete(`${firebaseUrl}/watchlist/${movieId}.json`);
 
-export default { addToWatchlist, getWatchlistById, deleteMovie };
+const editRating = (movieId, ratedMovieObj) => axios.put(`${firebaseUrl}/watchlist/${movieId}.json`, ratedMovieObj);
+
+export default {
+  addToWatchlist, getWatchlistById, deleteMovie, editRating,
+};
