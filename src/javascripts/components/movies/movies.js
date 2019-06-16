@@ -4,6 +4,7 @@ import 'firebase/auth';
 import util from '../../helpers/util';
 import movieData from '../../helpers/data/movieData';
 import watchlistData from '../../helpers/data/watchlistData';
+import watchedData from '../../helpers/data/watchedData';
 
 const createNewMovie = (e) => {
   e.preventDefault();
@@ -97,7 +98,7 @@ const addEvents = () => {
   }
 };
 
-const domStringBuilder = (movies, watchlist) => {
+const domStringBuilder = (movies, watchlist, watched) => {
   let domString = '';
   domString += '<div class="row text-center">';
   movies.forEach((movie) => {
@@ -130,17 +131,33 @@ const domStringBuilder = (movies, watchlist) => {
   watchlistBuilder += '</div>';
   util.printToDom('moviesDiv', domString);
   util.printToDom('watchlistDiv', watchlistBuilder);
+  console.error(watched);
+  // util.printToDom('watchedDiv', watchedBuilder );
   addEvents();
 };
+
+// const getMovies = (uid) => {
+//   movieData.getAllMoviesByUid(uid)
+//     .then((movies) => {
+//       watchlistData.getWatchlistById(uid).then((watchlist) => {
+//         domStringBuilder(movies, watchlist);
+//       });
+//     })
+//     .catch(err => console.error('no movies', err));
+// };
 
 const getMovies = (uid) => {
   movieData.getAllMoviesByUid(uid)
     .then((movies) => {
-      watchlistData.getWatchlistById(uid).then((watchlist) => {
-        domStringBuilder(movies, watchlist);
-      });
-    })
-    .catch(err => console.error('no movies', err));
+      watchlistData.getWatchlistById(uid)
+        .then((watchlist) => {
+          watchedData.getWatchedById(uid)
+            .then((watched) => {
+              domStringBuilder(movies, watchlist, watched);
+            });
+        })
+        .catch(err => console.error('no movies', err));
+    });
 };
 
 export default { getMovies };
