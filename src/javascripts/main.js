@@ -9,7 +9,6 @@ import '../styles/main.scss';
 import '../styles/movies.scss';
 
 const init = () => {
-  // console.error(apiKeys.firebaseKeys);
   firebase.initializeApp(apiKeys.firebaseKeys);
   myNavBar.navbarEvents();
   authData.checkLoginStatus();
