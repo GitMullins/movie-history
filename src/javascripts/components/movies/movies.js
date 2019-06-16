@@ -59,32 +59,12 @@ const assignRating = (e) => {
     uid: firebase.auth().currentUser.uid,
     rating: e.target.id.split('.')[0],
   };
-  watchlistData.editRating(movieId, ratedMovie)
+  watchedData.editRating(movieId, ratedMovie)
     .then(() => getMovies(firebase.auth().currentUser.uid)) // eslint-disable-line no-use-before-define
     .catch(err => console.error('no rating', err));
 };
 
-// const rateMovieEvent = (e) => {
-//   // console.error(e.target.id);
-//   document.getElementById(e.target.id).classList.add('hide');
-//   // console.error(document.getElementById(e.target.id));
-//   const id = e.target.id.split('.')[1];
-//   // console.error(`stars.${id}`);
-//   // document.getElementsByClassName(`stars.${id}`).classList.remove('hide');
-//   document.getElementById(`1-star.${id}`).classList.remove('hide');
-//   document.getElementById(`2-star.${id}`).classList.remove('hide');
-//   document.getElementById(`3-star.${id}`).classList.remove('hide');
-//   document.getElementById(`4-star.${id}`).classList.remove('hide');
-//   document.getElementById(`5-star.${id}`).classList.remove('hide');
-//   const ratingButtons = document.getElementsByClassName('stars');
-//   for (let i = 0; i < ratingButtons.length; i += 1) {
-//     ratingButtons[i].addEventListener('click', assignRating);
-//   }
-// };
-
 const watchedMovieEvent = (e) => {
-  // document.getElementById(e.target.id).classList.add('hide');
-  // console.error(document.getElementById(e.target.id));
   const id = e.target.id.split('.')[1];
   const movie = {
     imageUrl: $(e.target).closest('div').find('.img')[0].id,
@@ -93,31 +73,8 @@ const watchedMovieEvent = (e) => {
   };
   watchlistData.deleteMovie(id);
   watchedData.addToWatched(movie)
-    .then(() => {
-      // document.getElementById(`1-star.${id}`).classList.remove('hide');
-      // document.getElementById(`2-star.${id}`).classList.remove('hide');
-      // document.getElementById(`3-star.${id}`).classList.remove('hide');
-      // document.getElementById(`4-star.${id}`).classList.remove('hide');
-      // document.getElementById(`5-star.${id}`).classList.remove('hide');
-      const ratingButtons = document.getElementsByClassName('stars');
-      for (let i = 0; i < ratingButtons.length; i += 1) {
-        ratingButtons[i].addEventListener('click', assignRating);
-      }
-    })
     .then(() => getMovies(firebase.auth().currentUser.uid)) // eslint-disable-line no-use-before-define
     .catch(err => console.error('no watched movies', err));
-
-  // console.error(`stars.${id}`);
-  // document.getElementsByClassName(`stars.${id}`).classList.remove('hide');
-  // document.getElementById(`1-star.${id}`).classList.remove('hide');
-  // document.getElementById(`2-star.${id}`).classList.remove('hide');
-  // document.getElementById(`3-star.${id}`).classList.remove('hide');
-  // document.getElementById(`4-star.${id}`).classList.remove('hide');
-  // document.getElementById(`5-star.${id}`).classList.remove('hide');
-  // const ratingButtons = document.getElementsByClassName('stars');
-  // for (let i = 0; i < ratingButtons.length; i += 1) {
-  //   ratingButtons[i].addEventListener('click', assignRating);
-  // }
 };
 
 const addEvents = () => {
@@ -133,6 +90,10 @@ const addEvents = () => {
   const editButtons = document.getElementsByClassName('rate');
   for (let i = 0; i < editButtons.length; i += 1) {
     editButtons[i].addEventListener('click', watchedMovieEvent);
+  }
+  const ratingButtons = document.getElementsByClassName('stars');
+  for (let i = 0; i < ratingButtons.length; i += 1) {
+    ratingButtons[i].addEventListener('click', assignRating);
   }
 };
 
@@ -155,7 +116,7 @@ const domStringBuilder = (movies, watchlist, watched) => {
     watchlistBuilder += `<h3 id="${movie.title}" class="title">${movie.title}</h3>`;
     watchlistBuilder += `<img class="img" id="${movie.imageUrl}" src="${movie.imageUrl}" alt="birthday location"/>`;
     watchlistBuilder += `<button id="${movie.id}" class="btn btn-danger delete">DELETE</button>`;
-    watchlistBuilder += `<button id="rate.${movie.id}" class="btn btn-sm btn-warning rate">RATE</button>`;
+    watchlistBuilder += `<button id="rate.${movie.id}" class="rate btn btn-sm btn-warning">RATE</button>`;
     watchlistBuilder += '</div>';
   });
   watchlistBuilder += '</div>';
@@ -163,10 +124,9 @@ const domStringBuilder = (movies, watchlist, watched) => {
   watchedBuilder += '<div class="row text-center">';
   watched.forEach((movie) => {
     watchedBuilder += `<div id="${movie.id}" class="card col-3" style="width: 50rem;">`;
-    watchedBuilder += '<h2>WATCHLIST</h2>';
+    watchedBuilder += '<h2>WATCHED</h2>';
     watchedBuilder += `<h3 id="${movie.title}" class="title">${movie.title}</h3>`;
     watchedBuilder += `<img class="img" id="${movie.imageUrl}" src="${movie.imageUrl}" alt="birthday location"/>`;
-    watchedBuilder += `<button id="${movie.id}" class="btn btn-danger delete">DELETE</button>`;
     watchedBuilder += `<button id="1-star.${movie.id}" class="stars btn btn-sm btn-warning">1 &#9733</button>`;
     watchedBuilder += `<button id="2-star.${movie.id}" class="stars btn btn-sm btn-warning">2 &#9733</button>`;
     watchedBuilder += `<button id="3-star.${movie.id}" class="stars btn btn-sm btn-warning">3 &#9733</button>`;
@@ -175,26 +135,14 @@ const domStringBuilder = (movies, watchlist, watched) => {
     if (movie.rating) {
       watchedBuilder += `<div>${movie.rating}</div>`;
     }
-    watchlistBuilder += '</div>';
+    watchedBuilder += '</div>';
   });
-  watchlistBuilder += '</div>';
-
-
+  watchedBuilder += '</div>';
   util.printToDom('moviesDiv', domString);
   util.printToDom('watchlistDiv', watchlistBuilder);
   util.printToDom('watchedDiv', watchedBuilder);
   addEvents();
 };
-
-// const getMovies = (uid) => {
-//   movieData.getAllMoviesByUid(uid)
-//     .then((movies) => {
-//       watchlistData.getWatchlistById(uid).then((watchlist) => {
-//         domStringBuilder(movies, watchlist);
-//       });
-//     })
-//     .catch(err => console.error('no movies', err));
-// };
 
 const getMovies = (uid) => {
   movieData.getAllMoviesByUid(uid)
