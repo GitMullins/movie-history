@@ -4,7 +4,7 @@
 A website to keep track of movies and their shooting locations.
 
 ## Screenshots
-
+https://raw.githubusercontent.com/GitMullins/movie-history/master/src/img/screenshot.PNG
 
 ## Installation Instructions
 * Clone down this repo
@@ -23,19 +23,6 @@ David Mullins
 
 
 
-# User Story
-As a User, when I click the login with google button, I should be prompted with a google popup to pick which account to log in with.
-# AC
-**WHEN** The user clicks the google login button they should see a popup window with an option to log into the site with their google account
-**THEN** They should be able to enter their gmail information to log into the site
-# Development
-* Make Project @ firebase
-* @ firebase enable gmail login (authentication -> Sign in method -> gmail -> enable)
-* go to project settings -> click the html icon (`</>`)
-* back in the local project's console enter `npm install --save firebase`
-* make a file named `apiKeys.json`, @ `src/javascripts/helpers`
-* copy the part of the firebase info given on firebase with "apikey, authDomain, etc", and convert this into json data.
-    * **IMPORTANT** YOU MUST ADD THIS FILE TO `.gitignore`, and import when needed
 ``` JSON
 {
   "firebaseKeys": {

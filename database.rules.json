@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "movies": {
+      ".indexOn": "uid"
+    },
+    "watchlist": {
+      ".indexOn": "uid"
+    },
+    "watched": {
+      ".indexOn": "uid"
+    }
+  }
+}
