@@ -11,6 +11,7 @@ const getWatchedById = uid => new Promise((resolve, reject) => {
       Object.keys(watchedResults).forEach((watchlistId) => {
         watchedResults[watchlistId].id = watchlistId;
         watched.push(watchedResults[watchlistId]);
+        console.error(watched);
       });
       resolve(watched);
     })
@@ -19,10 +20,8 @@ const getWatchedById = uid => new Promise((resolve, reject) => {
 
 const addToWatched = movie => axios.post(`${firebaseUrl}/watched.json`, movie);
 
-const deleteMovie = movieId => axios.delete(`${firebaseUrl}/watched/${movieId}.json`);
-
 const editRating = (movieId, ratedMovieObj) => axios.put(`${firebaseUrl}/watchlist/${movieId}.json`, ratedMovieObj);
 
 export default {
-  addToWatched, getWatchedById, deleteMovie, editRating,
+  addToWatched, getWatchedById, editRating,
 };
