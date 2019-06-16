@@ -3,8 +3,8 @@
 ## Description
 A website to keep track of a user's movies, watchlist, and watched movies.
 
-## Screenshots
-![image of Movies](https://raw.githubusercontent.com/GitMullins/movie-history/master/src/img/screenshot.PNG)
+## Screenshot
+![image of movies](https://raw.githubusercontent.com/GitMullins/movie-history/master/src/img/screenshot.PNG)
 
 ## How to Run
 * Direct web-browser to: `https://movie-history-9ff74.firebaseapp.com/`
